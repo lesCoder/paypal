@@ -24,7 +24,7 @@ function get_credencials($client_id, $client_secret)
     ));
 
     $response = curl_exec($curl);
-
+    
     curl_close($curl);
     try {
         return  json_decode($response);

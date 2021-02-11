@@ -9,6 +9,8 @@ $client_secret = 'EOuZEMvtpNQagb-6ef1yGnAtAlV3z2wmxgvMC9lNgWdppBuJ6p-yVyzV2jX5xH
 $p_name = $_REQUEST['p_name'];
 $s_name = $_REQUEST['s_name'];
 $cpf = $_REQUEST['cpf'];
+
+
 $telefone = $_REQUEST['telefone'];
 $email = $_REQUEST['email'];
 $forced_status = $_REQUEST['forced_status'];
@@ -16,6 +18,9 @@ $forced_status = $_REQUEST['forced_status'];
 //data sanitize
 include_once('validacao.php');
 
+if (!validaCPF($cpf)) {
+    $error[] = "CPF Inválido";
+}
 
 //JSON RESPONSE
 $tokens =  get_credencials($client_id, $client_secret);
@@ -98,12 +103,8 @@ $data = create_payment($payload, $tokens->access_token);
 
 
 if (isset($data->details[0]->issue)) {
-    $error = $data->details[0]->issue;
+    $error[] = $data->details[0]->issue;
 }
-
-//echo '<pre>';
-//echo json_encode($data);
-//echo '</pre>';
 $payment_id = @$data->id;
 $links = @$data->links;
 
@@ -116,17 +117,29 @@ $links = @$data->links;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PP +</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        .card-body {
+            background: #1d1f21;
+            border: 0;
+            border-radius: .5rem;
+            color: #eee;
+            font-family: monospace;
+            white-space: pre-line;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
+    <!--
         <div class="md-12">
             <div>
                 <label>Gerou o Access TOKEN:</label>
@@ -140,6 +153,74 @@ $links = @$data->links;
             <div>
                 <label>Invoice Number (identificador customizado):</label>
                 <div><b><?= $rand ?></b></div>
+            </div>
+        </div>
+
+        -->
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link " data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Access TOKEN
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <span style="color: red;">REQUEST</span>
+                    <pre>
+                    <div class="card-body">
+                        
+                    curl -v https://api-m.sandbox.paypal.com/v1/oauth2/token \
+                    -H "Accept: application/json" \
+                    -H "Accept-Language: en_US" \
+                    -u "<?= $client_secret ?>:<?= $client_id ?>" \
+                    -d "grant_type=client_credentials"
+                    
+                    </div>
+                    <legend>font: <a href="https://developer.paypal.com/docs/api/get-an-access-token-curl/">https://developer.paypal.com/docs/api/get-an-access-token-curl/</a></legend>
+                    </pre>
+                    <span style="color: red;">RESPONSE</span>
+                    <div>
+                        <pre>
+                        <div class="card-body">
+                            <?= trim(json_encode($tokens, JSON_PRETTY_PRINT)) ?>
+                        </div>
+                    </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Create Payment
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <span style="color: red;">REQUEST</span>
+                    <pre>
+                    <div class="card-body">
+                        curl -v -X POST https://api-m.sandbox.paypal.com/v1/payments/payment \
+                        -H "Content-Type: application/json" \
+                        -H "Authorization: Bearer Access-Token" \
+                        -d '<?= trim(json_encode($payload, JSON_PRETTY_PRINT)) ?>'
+                    </div>
+                    <legend>font: <a href="https://developer.paypal.com/docs/api/payments/v1/#payment_create">https://developer.paypal.com/docs/api/payments/v1/#payment_create</a></legend>
+                    </pre>
+
+                    <span style="color: red;">RESPONSE</span>
+                    <div>
+                        <pre>
+                        <div class="card-body">
+                            <?= trim(json_encode($data, JSON_PRETTY_PRINT)) ?>
+                        </div>
+                    </pre>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -186,7 +267,8 @@ $links = @$data->links;
             "country": "BR",
             /*Optional*/
             //"collectBillingAddress": true,
-            //"rememberedCards": "customerRememberedCardHash",
+            //"disallowRememberedCards":true,
+            "rememberedCards": "G2AZBmYN4t2vkD0k6usT90AyKravPR_GAPEvOhX4y7Zdd2av3-Hd-L0VFz4Ael31bSG1PdE7UKN7qIaVImWRehFe7QiEZhL3IstcKyP6YhWp7AxwigrD9XOE9zOiMa3dwYtnxKPsPS3tVots",
             //'merchantInstallmentSelectionOptional': false,
             //'merchantInstallmentSelection': 5,
         });
@@ -277,7 +359,7 @@ $links = @$data->links;
                     }
 
                     //	var hostName = window.location.origin;
-                    var pathExecute = './return_url.php?forced_status=<?=$forced_status?>';
+                    var pathExecute = './return_url.php?forced_status=<?= $forced_status ?>';
                     //	var ExecutePaymentPath = hostName+pathExecute;
                     var ExecutePaymentPath = pathExecute;
 
@@ -292,23 +374,23 @@ $links = @$data->links;
                         dataType: 'json',
                         data: reqs,
                         success: function(response) {
-                            if(typeof(response.transactions) != 'undefined'){
+                            if (typeof(response.transactions) != 'undefined') {
 
                                 var state = response.transactions['0'].related_resources['0'].sale['state'];
-                            if (state == "completed") {
-                                alert("Pagamento feito com sucesso!");
-                                console.log(response);
-                                //window.location = "../../success.php";
-                            }
-                            $("#responseExecute").show().html("<pre>" + JSON.stringify(response, null, 2) + "</pre>");
+                                if (state == "completed") {
+                                    alert("Pagamento feito com sucesso!");
+                                    console.log(response);
+                                    //window.location = "../../success.php";
+                                }
+                                $("#responseExecute").show().html("<pre>" + JSON.stringify(response, null, 2) + "</pre>");
 
-                            }else if(response.message){
+                            } else if (response.message) {
                                 alert(response.message);
-                            }else{
+                            } else {
                                 alert(response.details['0'].issue);
                             }
 
-                            
+
                         },
                         error: function(err) {
                             console.log(err);
