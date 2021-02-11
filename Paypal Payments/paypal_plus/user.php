@@ -225,7 +225,7 @@
         window.setTimeout(function(){
 
 // Move to a new location or you can do something else
-window.location.href = "http://localhost/Paypal%20Payments/paypal_plus/user_data.php?v=<?=$_REQUEST['v']?>";
+window.location.href = "./user_data.php?v=<?=$_REQUEST['v']?>";
 
 }, 3000);
 
