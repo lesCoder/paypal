@@ -1,7 +1,18 @@
 <?php
 
+session_start();
+
 function get_credencials($client_id, $client_secret)
 {
+    
+    if(isset($_SESSION['oauth2_token']) && !empty($_SESSION['oauth2_token']) ){
+        $now = new DateTime("now");
+        $futureTime = $_SESSION['oauth2_token']['futureTime'];
+        if($now < $futureTime){            
+            return $_SESSION['oauth2_token']['full_return'];
+        }
+    }
+
     $headers = array(
         'Content-Type:application/json',
         'Authorization: Basic ' . base64_encode("$client_id:$client_secret"),
@@ -27,7 +38,18 @@ function get_credencials($client_id, $client_secret)
     
     curl_close($curl);
     try {
-        return  json_decode($response);
+
+        $r = json_decode($response);
+        
+        $futureTime = new DateTime();
+        $futureTime->modify('+'.$r->expires_in.' seconds');
+        $_SESSION['oauth2_token']['futureTime'] = $futureTime;
+        $_SESSION['oauth2_token']['access_token'] = $r->access_token;
+        $_SESSION['oauth2_token']['full_return'] = $r;
+        
+        return  $r;
+
+
     } catch (\Throwable $th) {
         print_r($th);
     }
