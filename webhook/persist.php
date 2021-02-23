@@ -2,7 +2,11 @@
 
 function persist($message)
 {
-$message = json_encode($message);
+    if( !is_string($message) ){
+        $message = json_encode($message);    
+    }
+    
+
     $user = 'freedbtech_adminedu';
     $pass = 'passedu';
 
@@ -24,4 +28,5 @@ $message = json_encode($message);
         throw $e;
     }
 }
-persist($_REQUEST);
+
+persist(file_get_contents('php://input'));
