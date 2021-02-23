@@ -2,7 +2,7 @@
 
 function persist($message)
 {
-
+$message = json_encode($message);
     $user = 'freedbtech_adminedu';
     $pass = 'passedu';
 
