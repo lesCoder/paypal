@@ -24,3 +24,4 @@ function persist($message)
         throw $e;
     }
 }
+persist($_REQUEST);
