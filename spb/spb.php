@@ -12,7 +12,7 @@ $custom_color = $_REQUEST['custom_color'];
 </head>
 
 <body>
-    <script src="http://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
     <div id="paypal-button"></div>
 
