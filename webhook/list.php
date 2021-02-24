@@ -34,6 +34,8 @@ function list_webhook($access_token)
 
     $response = curl_exec($curl);
 
+    $response = json_decode($response);
+    $response = json_encode($response,JSON_PRETTY_PRINT);
     curl_close($curl);
     return ($response);
 }
@@ -57,6 +59,8 @@ function list_webhook($access_token)
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
 </head>
 
 <body>
@@ -64,12 +68,12 @@ function list_webhook($access_token)
     <div class="container py-5">
         <div class="row text-center text-black mb-5">
             <div class="col-lg-7 mx-auto">
-                <h1 class="">Webhooks</h1>
+                <h1 class="">List Webhooks</h1>
             </div>
         </div>
 
         <div class="row">
-            <?= list_webhook($access_token); ?>
+            <pre class="prettyprint"><?= list_webhook($access_token); ?></pre>
         </div>
 
     </div>
