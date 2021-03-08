@@ -14,11 +14,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
-    .card-img-top {
-    
-    height: 205px;
-}
-</style>
+        .card-img-top {
+
+            height: 205px;
+        }
+        .row{
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -64,6 +67,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="https://www.paypalobjects.com/marketing/web/fi/fi/home/Checkout_1000x1000_transparent.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text">SPB Link (link de pagamento)</p>
+                        <a href="./spb link/woocommerce" class="btn btn-primary center">Go</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
 
