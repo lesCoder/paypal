@@ -1,0 +1,293 @@
+<title>SPB Link</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+   integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+   integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+   crossorigin="anonymous"></script>
+<style>
+   body.debug div {
+   outline: 1px solid orange;
+   }
+   body.debug div:hover {
+   outline: 1px solid maroon;
+   }
+   body.debug div.well {
+   outline: none;
+   }
+   body.debug iframe {
+   outline: 2px solid green;
+   }
+   /* overwrite some bootstrap values - start */
+   .panel {
+   background-color: transparent;
+   }
+   /* overwrite some bootstrap values - end */
+   #pppIframe {
+   position: absolute;
+   z-index: 100;
+   }
+   @keyframes rotateThis {
+   from {
+   transform: rotate(0deg);
+   }
+   to {
+   transform: rotate(360deg);
+   }
+   }
+   button.infamous-continue-button span.glyphicon {
+   display: none;
+   }
+   button.infamous-continue-button.loading span.glyphicon {
+   display: inline-block;
+   margin-right: .5em;
+   animation-name: rotateThis;
+   animation-duration: 1s;
+   animation-iteration-count: infinite;
+   animation-timing-function: linear;
+   }
+   #sessionInfo,
+   #sessionInfoDrawer {
+   background-color: rgba(0, 0, 0, 0.75);
+   color: white;
+   position: fixed;
+   right: 5%;
+   }
+   #sessionInfo {
+   top: 30px;
+   z-index: 10;
+   display: block;
+   width: 90%;
+   height: 90%;
+   border-radius: 15px 0 15px 15px;
+   overflow: auto;
+   }
+   #sessionInfoDrawer {
+   top: 0;
+   z-index: 11;
+   display: block;
+   width: 200px;
+   height: 30px;
+   border-bottom-width: 0;
+   cursor: pointer;
+   text-align: center;
+   line-height: 30px;
+   vertical-align: middle;
+   }
+   #sessionInfoDrawer:hover {
+   color: yellow;
+   }
+   #sessionInfoDrawer.closed {
+   border-radius: 0 0 15px 15px;
+   border-bottom-width: 1px;
+   }
+   #sessionInfoDrawer.closed+#sessionInfo {
+   display: none;
+   }
+   #sessionInfo>div {
+   margin: 10px;
+   }
+   #sessionInfo dt {
+   display: block;
+   width: 300px;
+   padding-right: 5px;
+   float: left;
+   clear: left;
+   text-align: right;
+   }
+   #sessionInfo dd {
+   padding: 2px;
+   border-radius: 5px;
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+   white-space: pre;
+   font-family: monospace;
+   }
+   #sessionInfo dt:hover+dd,
+   #sessionInfo dd:hover {
+   padding: 2px;
+   background-color: rgba(255, 160, 0, 0.5);
+   }
+   #sessionInfo h2 {
+   width: 300px;
+   padding-right: 5px;
+   text-align: right;
+   margin-bottom: 10px;
+   border-right: 1px solid white;
+   border-bottom: 1px solid white;
+   }
+   #sessionInfo dl+h2 {
+   margin-top: 1em;
+   }
+   .navbar-style {
+   background-color: white;
+   height: inherit;
+   width: inherit;
+   }
+   .navbarbright-style {
+   background-color: #009cdf;
+   height: inherit;
+   width: inherit;
+   }
+   .vertical-center-enabled .page-header-content-wrapper {
+   align-items: end;
+   justify-content: flex-end;
+   }
+   title {
+   font-family: "Helvetica Neue";
+   }
+   button {
+   font-family: "Helvetica Neue";
+   }
+   label {
+   font-family: "Helvetica Neue";
+   color: #949494;
+   }
+   .submit-btn {
+   background-color: #58bc95;
+   font-weight: bold;
+   color: white;
+   border: none;
+   }
+   .header-img {
+   position: relative;
+   height: inherit;
+   width: 100%;
+   }
+   .header-icon {
+   max-width: 100px !important;
+   margin-top: -5%;
+   }
+   .header-icon-gen {
+   max-width: 100px !important;
+   margin-top: -7%;
+   filter: sepia(100%);
+   -webkit-filter: sepia(100%);
+   }
+   .ml-1 {
+   margin-left: 15%;
+   z-index: -1;
+   }
+   .header-span {
+   position: absolute;
+   font-weight: bold;
+   color: white;
+   max-width: 10% !important;
+   margin-top: -2%;
+   margin-left: 3%;
+   }
+   .btn-copy {
+   margin-right: 0%;
+   }
+   #result {
+   display: none;
+   }
+   #paypal-button-container {
+   text-align: center;
+   height: 100%;
+   margin-top: 25%;
+   }
+</style>
+<h2>Gerador de link</h2>
+<div class="navbar navbar-static-top navbar-style"><img class="img-fluid header-img" alt="" /> <img
+   class="header-icon-gen ml-1" alt="" /></div>
+<div class="container">
+   <br />
+   <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+         <form role="form" name="adjustConfiguration">
+            <div id="form" class="row">
+               <div class="col-md"><label for="cfgitem-itemName" class="label-for">URL do checkout</label> <input
+                  disabled="disabled" class="form-control" id="cfgitem-base" name="base" display="block"
+                  value="" type="text" /> <label for="cfgitem-itemDescription">Valor a cobrar</label> <input
+                  type="text" class="form-control" id="cfgitem-amount" name="amount" value="" /> <label
+                  for="cfgitem-itemSku">Observações</label> <input type="text" class="form-control"
+                  id="cfgitem-idItem" name="idItem" value="" /> <label for="cfgitem-telefone">Telefone (DDD +
+                  Número)</label> <input type="text" class="form-control" id="cfgitem-telefone" name="idItem"
+                     value="" /> <br /> <button style="width: 100% !important;"
+                     class="btn btn-primary submit-btn" onclick="generateUrl();return false;">Gerar link</button>
+               </div>
+            </div>
+            <br /> <br />
+            <div id="result" class="row">
+               <div class="col-md"><label for="cfgurl-final">URL final</label> <input disabled="disabled"
+                  type="text" class="form-control" id="cfgurl-final" name="finalUrl" value="" /></div>
+            </div>
+         </form>
+         <br />
+         <div id="share" class="row" style="display: none;">
+            <div id="shareWhatsapp" class="col-md-9" style="display: none;"><button
+               class="btn btn-outline-secondary submit-btn" style="width: 100% !important;"
+               onclick="shareWhatsapp(); return false;"> <i class="fa fa-whatsapp" aria-hidden="true"></i>
+               Compartilhar </button>
+            </div>
+            <div id="copyDiv" class="col-md-3"><button id="copyBtn" class="btn btn-outline-secondary btn-copy"
+               onclick="copyContent(); return false;"> Copiar </button></div>
+         </div>
+      </div>
+      <div class="col-md-3"></div>
+   </div>
+</div>
+<script>// <![CDATA[
+   $(document).ready(function () {
+       // TODO: add customer's payment URL
+       var urlCheckout = "https://pp-showcase.herokuapp.com/spb%20link/WooCommerce/pagamento.html";
+       $("#cfgitem-base").val(urlCheckout);
+   });
+   
+   
+   function generateUrl() {
+       try {
+           var base = $('#cfgitem-base').val();
+           var tail = "";
+           var amount = $('#cfgitem-amount').val();
+           var idItem = $('#cfgitem-idItem').val();
+   
+           var encTail = btoa(tail.concat('amount=', amount, '&id=', idItem, '&currency=BRL'));
+           var finalUrl = base.concat('?', encTail);
+           $('#result').css('display', 'block');
+           $('#share').css('display', 'flex');
+           $('#cfgurl-final').val(finalUrl);
+   
+           if (document.getElementById("cfgitem-telefone").value.length > 0) {
+               $('#shareWhatsapp').css('display', 'flex');
+               $('#shareWhatsapp').removeClass('col-md-9').removeClass('col-md-0').addClass('col-md-9');
+               $('#copyDiv').removeClass('col-md-3').removeClass('col-md-12').addClass('col-md-3');
+           } else {
+               $('#shareWhatsapp').removeClass('col-md-9').addClass('col-md-0');
+               $('#shareWhatsapp').css('display', 'none');
+               $('#copyDiv').removeClass('col-md-3').addClass('col-md-12');
+               $('#copyBtn').css('width', '100%');
+           }
+           console.log('Final url= ' + finalUrl);
+       } catch (e) {
+           console.log(e);
+       }
+   }
+   
+   function copyContent() {
+       try {
+           var txtarea = document.createElement("textarea");
+           txtarea.value = document.getElementById("cfgurl-final").value;
+           document.body.appendChild(txtarea);
+           txtarea.select();
+           document.execCommand('copy');
+           document.body.removeChild(txtarea);
+           window.alert("URL copiada!");
+       } catch (e) {
+           console.log(e);
+       }
+   }
+   
+   function shareWhatsapp() {
+       var phone = document.getElementById("cfgitem-telefone").value;
+       var text = "Olá, você pode usar este link para efetuar o pagamento: " + document.getElementById("cfgurl-final").value;
+       window.location = "https://api.whatsapp.com/send?phone=+55" + phone + "&text=" + text;
+   }
+   // ]]>
+</script>
